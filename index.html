@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BiLiClass</title>
+</head>
+<body>
+
+<script src="socket.io.js"></script>
+<script>
+  var socket = io('http://104.194.67.188:12345');
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { reply: 'hello server' });
+  });
+
+  var textField = document.createElement("input");
+  textField.type = "text";
+  textField.name = "textField";
+  document.body.appendChild(textField);
+
+  var button = document.createElement("input");
+  button.type = "button";
+  button.value = "Send";
+  button.name = "sendButton";
+  button.onclick = function(){
+  	socket.emit("messageC2S", {message: textField.value});
+  	textField.value = "";
+  }
+  document.body.appendChild(button);
+
+  var button2 = document.createElement("input");
+  button2.type = "button";
+  button2.value = "Like";
+  button2.name = "likeButton";
+  button2.onclick = function(){
+    socket.emit("messageC2S", {message: "like"});
+  }
+  document.body.appendChild(button2);
+  // socket.on('messageS2C', function(data) {
+  // 	//document.write(data.message);
+  // 	var label = document.createElement("marquee");
+  // 	label.loop = 1;
+  // 	label.innerHTML = data.message;
+  // 	document.body.appendChild(label);
+
+  // })
+</script>
+
+</body>
+</html>
